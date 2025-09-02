@@ -4,15 +4,15 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DevTube – Coding Playlists</title>
+  <title>CodifyX – Coding Playlists</title>
   <style>
     :root{
-      --bg:#0b0f14;          /* deep dev dark */
-      --panel:#0f1722;       /* card surface */
-      --muted:#9aa4b2;       /* secondary text */
-      --text:#e6eef8;        /* primary text */
-      --brand:#59ce8f;       /* neon green accent */
-      --brand-2:#7cc5ff;     /* cyan accent */
+      --bg:#0b0f14;
+      --panel:#0f1722;
+      --muted:#9aa4b2;
+      --text:#e6eef8;
+      --brand:#59ce8f;
+      --brand-2:#7cc5ff;
       --chip:#1a2332;
       --radius:18px;
       --shadow:0 12px 30px rgba(0,0,0,.35);
@@ -29,32 +29,54 @@
       font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Fira Code", monospace;
     }
 
-    /* Header */
-    .topbar{
-      display:flex; align-items:center; gap:12px; flex-wrap:wrap;
-      margin-bottom:16px;
+    /* === Band Header === */
+    .brand-header{
+      display:flex;
+      justify-content:center;
+      margin-bottom:24px;
     }
     .logo{
-      display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:999px;
-      background:linear-gradient( to right, rgba(89,206,143,.15), rgba(124,197,255,.15));
+      display:inline-flex; align-items:center; gap:12px;
+      padding:14px 20px;
+      border-radius:999px;
+      background:linear-gradient(to right, rgba(89,206,143,.15), rgba(124,197,255,.15));
       border:1px solid rgba(124,197,255,.15);
       box-shadow:var(--shadow);
     }
-    .logo .badge{ width:28px; height:28px; display:grid; place-items:center; border-radius:8px; background:var(--panel); border:1px solid rgba(255,255,255,0.06);}
-    .logo .tri{ width:0; height:0; border-left:10px solid var(--brand); border-top:6px solid transparent; border-bottom:6px solid transparent; filter:drop-shadow(0 0 8px rgba(89,206,143,.6)); }
-    .title{font-size:20px; font-weight:700; letter-spacing:.3px}
-
-    /* Controls */
-    .controls{
-      display:flex; flex-wrap:wrap; gap:8px; margin-left:auto;
+    .logo .badge{
+      width:34px; height:34px;
+      display:grid; place-items:center;
+      border-radius:10px;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,0.06);
     }
-    .btn{ cursor:pointer; border:none; color:var(--text); background:var(--chip); padding:10px 12px; border-radius:12px; box-shadow: var(--shadow); transition: transform .12s ease, background .2s ease; display:inline-flex; align-items:center; gap:8px;}
+    .logo .tri{
+      width:0; height:0;
+      border-left:12px solid var(--brand);
+      border-top:7px solid transparent;
+      border-bottom:7px solid transparent;
+      filter:drop-shadow(0 0 8px rgba(89,206,143,.6));
+    }
+    .logo .title{
+      font-size:24px; font-weight:700; letter-spacing:.5px;
+    }
+
+    /* Controls & Strips */
+    .controls, .strip{
+      display:flex; flex-wrap:wrap; justify-content:center;
+      gap:10px; margin-bottom:18px;
+    }
+    .btn{
+      cursor:pointer; border:none;
+      color:var(--text); background:var(--chip);
+      padding:10px 14px; border-radius:12px;
+      box-shadow: var(--shadow);
+      transition: transform .12s ease, background .2s ease;
+      display:inline-flex; align-items:center; gap:8px;
+    }
     .btn:hover{ transform: translateY(-2px); background:#1d2940; }
     .btn img{ width:22px; height:22px; border-radius:50%; }
     .btn strong{ font-size:12px; }
-
-    /* Channel & playlist strip */
-    .strip{ display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 16px; }
 
     /* Grid */
     .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:14px; }
@@ -63,208 +85,186 @@
     @media (max-width:720px){ .grid{ grid-template-columns: repeat(2, 1fr);} }
 
     .card{
-      grid-column: span 3; background:var(--panel); border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius); overflow:hidden; box-shadow: var(--shadow);
-      display:flex; flex-direction:column; min-height:240px; transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+      grid-column: span 3;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      display:flex; flex-direction:column;
+      min-height:240px;
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
     }
     .card:hover{ transform: translateY(-4px); border-color: rgba(124,197,255,.25); box-shadow: 0 16px 40px rgba(0,0,0,.45); }
 
     .thumb{
-      position:relative; aspect-ratio:16/9; background:#0d131b; overflow:hidden;
+      position:relative; aspect-ratio:16/9;
+      background:#0d131b; overflow:hidden;
     }
-    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05) contrast(1.02); }
+    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-    /* Custom play overlay (no YouTube logo on thumbnail) */
     .overlay{
-      position:absolute; inset:0; display:grid; place-items:center;
+      position:absolute; inset:0;
+      display:grid; place-items:center;
       background:linear-gradient(to bottom, rgba(0,0,0,.00), rgba(0,0,0,.28) 55%, rgba(0,0,0,.45));
       opacity:0; transition: opacity .2s ease;
     }
     .card:hover .overlay{ opacity:1; }
-    .playbtn{ width:64px; height:64px; border-radius:16px; background:rgba(10,18,28,.7); border:1px solid rgba(124,197,255,.45); backdrop-filter: blur(6px); display:grid; place-items:center; box-shadow: 0 0 0 6px rgba(124,197,255,.12); }
-    .playbtn:after{ content:""; width:0; height:0; border-left:18px solid var(--brand); border-top:11px solid transparent; border-bottom:11px solid transparent; margin-left:3px; filter: drop-shadow(0 0 10px rgba(89,206,143,.8)); }
+    .playbtn{
+      width:64px; height:64px; border-radius:16px;
+      background:rgba(10,18,28,.7);
+      border:1px solid rgba(124,197,255,.45);
+      backdrop-filter: blur(6px);
+      display:grid; place-items:center;
+      box-shadow: 0 0 0 6px rgba(124,197,255,.12);
+    }
+    .playbtn:after{
+      content:"";
+      width:0; height:0;
+      border-left:18px solid var(--brand);
+      border-top:11px solid transparent;
+      border-bottom:11px solid transparent;
+      margin-left:3px;
+      filter: drop-shadow(0 0 10px rgba(89,206,143,.8));
+    }
 
     .meta{ padding:10px 12px 14px; display:flex; flex-direction:column; gap:6px; }
-    .title{ font-size:13px; font-weight:700; color:var(--text); }
-    .sub{ color:var(--muted); font-size:12px; }
+    .meta .title{ font-size:13px; font-weight:700; color:var(--text); }
+    .meta .sub{ color:var(--muted); font-size:12px; }
 
     .loadmore{ display:flex; justify-content:center; margin:18px 0 6px; }
 
-    /* Modal player */
+    /* Modal */
     .modal{ position:fixed; inset:0; display:none; place-items:center; background:rgba(6,10,16,.75); backdrop-filter: blur(3px); padding:18px; z-index:50; }
     .modal.open{ display:grid; }
     .player{
-      width:min(100%, 1100px); aspect-ratio:16/9; background:#000; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,.06); box-shadow: var(--shadow);
+      width:min(100%, 1100px); aspect-ratio:16/9;
+      background:#000; border-radius:16px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow: var(--shadow);
     }
-    .close{ position:absolute; top:18px; right:18px; background:var(--chip); border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:8px 10px; cursor:pointer; }
-
-    /* Helper */
-    .hidden{ display:none !important; }
+    .close{
+      position:absolute; top:18px; right:18px;
+      background:var(--chip);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:10px; padding:8px 10px;
+      cursor:pointer;
+    }
   </style>
 </head>
 <body>
-  <header class="topbar" aria-label="DevTube header">
-    <span class="logo" title="DevTube">
+  <!-- Band Header -->
+  <header class="brand-header">
+    <span class="logo" title="CodifyX">
       <span class="badge"><span class="tri"></span></span>
-      <span class="title">DevTube<span style="opacity:.6">.io</span></span>
+      <span class="title">CodifyX<span style="opacity:.6">.io</span></span>
     </span>
-
-    <div class="controls" id="channelButtons">
-      <!-- Channel buttons injected here -->
-    </div>
   </header>
 
-  <div class="strip" id="playlistButtons">
-    <!-- Playlist buttons injected here -->
-  </div>
+  <!-- Controls -->
+  <section class="controls" id="channelButtons"></section>
+  <section class="strip" id="playlistButtons"></section>
 
-  <main class="grid" id="videosContainer" aria-live="polite" aria-busy="false">
-    <!-- Video cards go here -->
-  </main>
+  <!-- Grid -->
+  <main class="grid" id="videosContainer" aria-live="polite" aria-busy="false"></main>
 
+  <!-- Load More -->
   <div class="loadmore">
     <button class="btn" id="loadMoreBtn" onclick="loadMore()">Load more</button>
   </div>
 
-  <!-- Modal for player -->
+  <!-- Modal -->
   <section class="modal" id="playerModal" role="dialog" aria-modal="true" aria-label="Video player">
     <button class="close btn" onclick="closeModal()">✕ Close</button>
     <div class="player">
-      <iframe id="playerFrame" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <iframe id="playerFrame" width="100%" height="100%" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
     </div>
   </section>
 
   <script>
-    // ===================== Config =====================
-    const apiKey = 'AIzaSyANVKLt-ltn5j43kPD7AyeXSOf2F58cQNc'; // uses your provided key
+    const apiKey = 'AIzaSyANVKLt-ltn5j43kPD7AyeXSOf2F58cQNc';
     const maxResults = 12;
 
-    // Channels (id, label, optional icon path)
     const CHANNELS = [
-      ['UCNn75PJi2J5OmZGuLCZGJPg','Mathongo','Mathongo1.png'],
-      ['UCgBmfNILAlXmGv3CsJ8oFJA','Physics Galaxy','physicsgalaxy1.png'],
-      ['UCcMU5NE1Lmf4Fqpx7n9F3Sw','Nexus JEE','nexusjee1.png'],
-      ['UCWsvAo4chGgZn-8PVi1c0bA','Invisible Mechanics','invisible.png'],
-      ['UCKD62r2voInPrGceCP4MHUA','Dexter Chemistry','dexter.png'],
-      ['UCHWna16c7Ff0mY_QBVF2rXQ','Maths Unplugged','Maths.png'],
-      ['UC7px6OmooQLmsJlYACR_n-A','Eduniti','eduniti1.png'],
-      ['UCDG_YP69cl42ly3pPy8-Liw','Vora Classes','voraclasses1.png']
+      ['UCBwmMxybNva6P_5VmxjzwqA','Apna College','Apnacollege.png'],
+      ['UCDrf0V4fcBr5FlCtKwvpfwA','College Wallah','Collegewallah.png'],
+      ['UCeVMnSShP_Iviwkknt83cww','Code With Harry','codewithharry.png'],
     ];
 
-    // Playlists (id, label)
     const PLAYLISTS = [
-      ['PLcO6sQB3uK4_4p9SIz4UeL14x7d_JDYeV','Revision Checklist'],
-      ['PL_A4M5IAkMaeWLEVxKBQ3c4QlYVzldHn7','Advanced PYQ Physics'],
-      ['PLYFlGICvnvLjaSEn24Sceq-xNEYmAk8BV','Atoms Physics RY'],
-      ['PLYipXr10_o91l_VgIY8sxIgzU8gxT9vif','Advanced Physics PYQ'],
-      ['PLnG6YW15b0oSG49cB_H6Sxqcv6YHZ8y_-','IIT Express Maths'],
-      ['PLrHjxIp47OtV-kR3ZlkHEyU8aAZxVB2C8','Master OC'],
-      ['PLGhz9ljM7uOLOpTLvyzJzhhCTQkDW7aoa','Dexter Advanced'],
-      ['PLYVDsiuOZP5o7T58PG8SUiKECCzbY37J9','Advanced Booster'],
-      ['PLrHjxIp47OtUN_BGhKGGTSMKdjIvYB0JA','Master IOC'],
-      ['PLqkG39yUF_KgzcfQMWi-ajLSaAv2CfDbY','Bootcamp Physics'],
-      ['PLYFlGICvnvLi-6VMmu2Safry84f-jXoOX','Bounce Back']
+      ['PLxgZQoSe9cg1drBnejUaDD9GEJBGQ5hMt','C PW'],
+      ['PLxgZQoSe9cg2uGKIRzUbWaHRjEuZnAnhj','DSA in JAVA'],
+      ['PLhQjrBD2T3817j24-GogXmWqO5Q5vYy0V','CS50 PYTHON'],
+      ['PLu0W_9lII9ahIappRPN0MCAgtOu3lQjQi','CWH DSA'],
+      ['PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ','C++ APNI KAKSHA'],
     ];
 
-    // State
     let nextPageToken = '';
-    let currentSource = null; // { type:'channel'|'playlist', id: string }
+    let currentSource = null;
 
-    // ===================== UI Builders =====================
     const $channels = document.getElementById('channelButtons');
     const $playlists = document.getElementById('playlistButtons');
     const $grid = document.getElementById('videosContainer');
-    const $loadMore = document.getElementById('loadMoreBtn');
 
     function makeBtn(label, img){
       const b = document.createElement('button');
       b.className = 'btn';
-      if(img){
-        const i = document.createElement('img'); i.src = img; i.alt = '';
-        b.appendChild(i);
-      }
-      const t = document.createElement('strong'); t.textContent = label; b.appendChild(t);
+      if(img){ const i=document.createElement('img'); i.src=img; b.appendChild(i); }
+      const t=document.createElement('strong'); t.textContent=label; b.appendChild(t);
       return b;
     }
 
-    // Channels strip
     CHANNELS.forEach(([id,label,icon])=>{
-      const b = makeBtn(label, icon);
-      b.onclick = ()=> fetchChannel(id);
+      const b=makeBtn(label,icon);
+      b.onclick=()=>fetchChannel(id);
       $channels.appendChild(b);
     });
 
-    // Playlists strip
     PLAYLISTS.forEach(([id,label])=>{
-      const b = makeBtn(label);
-      b.onclick = ()=> fetchPlaylist(id);
+      const b=makeBtn(label);
+      b.onclick=()=>fetchPlaylist(id);
       $playlists.appendChild(b);
     });
 
-    // ===================== Data Fetchers =====================
-    async function fetchChannel(id, pageToken=''){
-      currentSource = {type:'channel', id};
+    async function fetchChannel(id,pageToken=''){
+      currentSource={type:'channel',id};
       $grid.setAttribute('aria-busy','true');
-      const url = new URL('https://www.googleapis.com/youtube/v3/search');
-      url.search = new URLSearchParams({
-        key: apiKey,
-        channelId: id,
-        part: 'snippet,id',
-        order: 'date',
-        maxResults: String(maxResults),
-        pageToken
-      });
-      const res = await fetch(url);
-      const data = await res.json();
-      nextPageToken = data.nextPageToken || '';
-      if(!pageToken) $grid.innerHTML = '';
+      const url=new URL('https://www.googleapis.com/youtube/v3/search');
+      url.search=new URLSearchParams({key:apiKey,channelId:id,part:'snippet,id',order:'date',maxResults:String(maxResults),pageToken});
+      const res=await fetch(url); const data=await res.json();
+      nextPageToken=data.nextPageToken||''; if(!pageToken) $grid.innerHTML='';
       (data.items||[]).forEach(addCardFromSearch);
       $grid.setAttribute('aria-busy','false');
     }
 
-    async function fetchPlaylist(id, pageToken=''){
-      currentSource = {type:'playlist', id};
+    async function fetchPlaylist(id,pageToken=''){
+      currentSource={type:'playlist',id};
       $grid.setAttribute('aria-busy','true');
-      const url = new URL('https://www.googleapis.com/youtube/v3/playlistItems');
-      url.search = new URLSearchParams({
-        key: apiKey,
-        playlistId: id,
-        part: 'snippet',
-        maxResults: String(maxResults),
-        pageToken
-      });
-      const res = await fetch(url);
-      const data = await res.json();
-      nextPageToken = data.nextPageToken || '';
-      if(!pageToken) $grid.innerHTML = '';
+      const url=new URL('https://www.googleapis.com/youtube/v3/playlistItems');
+      url.search=new URLSearchParams({key:apiKey,playlistId:id,part:'snippet',maxResults:String(maxResults),pageToken});
+      const res=await fetch(url); const data=await res.json();
+      nextPageToken=data.nextPageToken||''; if(!pageToken) $grid.innerHTML='';
       (data.items||[]).forEach(addCardFromPlaylist);
       $grid.setAttribute('aria-busy','false');
     }
 
-    // ===================== Card Builders =====================
     function addCardFromSearch(item){
-      const vid = item?.id?.videoId; if(!vid) return; // skip channels/shorts without id
-      const s = item.snippet;
-      addCard({
-        videoId: vid,
-        title: s.title,
-        date: s.publishedAt,
-        thumb: (s.thumbnails?.high||s.thumbnails?.medium||s.thumbnails?.default)?.url
-      });
+      const vid=item?.id?.videoId; if(!vid) return;
+      const s=item.snippet;
+      addCard({videoId:vid,title:s.title,date:s.publishedAt,thumb:(s.thumbnails?.high||s.thumbnails?.medium)?.url});
     }
     function addCardFromPlaylist(item){
-      const s = item.snippet;
-      addCard({
-        videoId: s?.resourceId?.videoId,
-        title: s.title,
-        date: s.publishedAt,
-        thumb: (s.thumbnails?.high||s.thumbnails?.medium||s.thumbnails?.default)?.url
-      });
+      const s=item.snippet;
+      addCard({videoId:s?.resourceId?.videoId,title:s.title,date:s.publishedAt,thumb:(s.thumbnails?.high||s.thumbnails?.medium)?.url});
     }
-    function addCard({videoId, title, date, thumb}){
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="thumb" role="button" tabindex="0" aria-label="Play ${escapeHtml(title)}" data-video="${videoId}">
+
+    function addCard({videoId,title,date,thumb}){
+      const card=document.createElement('article');
+      card.className='card';
+      card.innerHTML=`
+        <div class="thumb" role="button" tabindex="0" data-video="${videoId}">
           <img loading="lazy" src="${thumb}" alt="Thumbnail"/>
           <div class="overlay"><div class="playbtn"></div></div>
         </div>
@@ -272,40 +272,32 @@
           <div class="title">${escapeHtml(title)}</div>
           <div class="sub">Published: ${new Date(date).toLocaleDateString()}</div>
         </div>`;
-      card.querySelector('.thumb').addEventListener('click', ()=> openModal(videoId));
-      card.querySelector('.thumb').addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openModal(videoId);} });
+      card.querySelector('.thumb').addEventListener('click',()=>openModal(videoId));
+      card.querySelector('.thumb').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openModal(videoId);}});
       $grid.appendChild(card);
     }
 
-    // ===================== Player Modal =====================
-    const $modal = document.getElementById('playerModal');
-    const $frame = document.getElementById('playerFrame');
+    const $modal=document.getElementById('playerModal');
+    const $frame=document.getElementById('playerFrame');
 
     function openModal(videoId){
-      // Use modestbranding to minimize logo inside player. You cannot fully remove branding per YouTube TOS.
-      const src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
-      $frame.src = src;
+      $frame.src=`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
       $modal.classList.add('open');
     }
     function closeModal(){ $frame.src=''; $modal.classList.remove('open'); }
-    $modal.addEventListener('click', (e)=>{ if(e.target===$modal) closeModal(); });
-    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && $modal.classList.contains('open')) closeModal(); });
 
-    // ===================== Pagination =====================
     function loadMore(){
-      if(!currentSource || !nextPageToken) return;
-      if(currentSource.type==='channel') fetchChannel(currentSource.id, nextPageToken);
-      else fetchPlaylist(currentSource.id, nextPageToken);
+      if(!currentSource||!nextPageToken) return;
+      if(currentSource.type==='channel') fetchChannel(currentSource.id,nextPageToken);
+      else fetchPlaylist(currentSource.id,nextPageToken);
     }
-    window.loadMore = loadMore; // for button onclick
+    window.loadMore=loadMore;
 
-    // ===================== Utilities =====================
     function escapeHtml(str=''){
-      return str.replace(/[&<>"']/g, s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s]));
+      return str.replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s]));
     }
 
-    // ===================== Init (pick a default feed) =====================
-    // Default: show Physics Galaxy recent uploads on load
+    // Default load
     fetchChannel('UCgBmfNILAlXmGv3CsJ8oFJA');
   </script>
 </body>

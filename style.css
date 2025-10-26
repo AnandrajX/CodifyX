@@ -1,0 +1,144 @@
+:root{
+  --bg:#0b0f14;
+  --panel:#0f1722;
+  --muted:#9aa4b2;
+  --text:#e6eef8;
+  --brand:#59ce8f;
+  --brand-2:#7cc5ff;
+  --chip:#1a2332;
+  --radius:18px;
+  --shadow:0 12px 30px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; padding:18px;
+  background: radial-gradient(1200px 800px at 10% -10%, rgba(89,206,143,0.08), transparent 60%),
+              radial-gradient(900px 600px at 110% 10%, rgba(124,197,255,0.08), transparent 55%),
+              var(--bg);
+  color:var(--text);
+  font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Fira Code", monospace;
+}
+
+/* === Brand Header === */
+.brand-header{
+  display:flex;
+  justify-content:center;
+  margin-bottom:24px;
+}
+.logo{
+  display:inline-flex; align-items:center; gap:12px;
+  padding:14px 20px;
+  border-radius:999px;
+  background:linear-gradient(to right, rgba(89,206,143,.15), rgba(124,197,255,.15));
+  border:1px solid rgba(124,197,255,.15);
+  box-shadow:var(--shadow);
+}
+.logo .badge{
+  width:34px; height:34px;
+  display:grid; place-items:center;
+  border-radius:10px;
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,0.06);
+}
+.logo .tri{
+  width:0; height:0;
+  border-left:12px solid var(--brand);
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  filter:drop-shadow(0 0 8px rgba(89,206,143,.6));
+}
+.logo .title{
+  font-size:24px; font-weight:700; letter-spacing:.5px;
+}
+
+/* Controls & Strips */
+.controls, .strip{
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:10px; margin-bottom:18px;
+}
+.btn{
+  cursor:pointer; border:none;
+  color:var(--text); background:var(--chip);
+  padding:10px 14px; border-radius:12px;
+  box-shadow: var(--shadow);
+  transition: transform .12s ease, background .2s ease;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.btn:hover{ transform: translateY(-2px); background:#1d2940; }
+.btn img{ width:22px; height:22px; border-radius:50%; }
+.btn strong{ font-size:12px; }
+
+/* Grid */
+.grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:14px; }
+@media (max-width:1300px){ .grid{ grid-template-columns: repeat(9, 1fr);} }
+@media (max-width:1000px){ .grid{ grid-template-columns: repeat(6, 1fr);} }
+@media (max-width:720px){ .grid{ grid-template-columns: repeat(2, 1fr);} }
+
+.card{
+  grid-column: span 3;
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow: var(--shadow);
+  display:flex; flex-direction:column;
+  min-height:240px;
+  transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card:hover{ transform: translateY(-4px); border-color: rgba(124,197,255,.25); box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+
+.thumb{
+  position:relative; aspect-ratio:16/9;
+  background:#0d131b; overflow:hidden;
+}
+.thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.overlay{
+  position:absolute; inset:0;
+  display:grid; place-items:center;
+  background:linear-gradient(to bottom, rgba(0,0,0,.00), rgba(0,0,0,.28) 55%, rgba(0,0,0,.45));
+  opacity:0; transition: opacity .2s ease;
+}
+.card:hover .overlay{ opacity:1; }
+.playbtn{
+  width:64px; height:64px; border-radius:16px;
+  background:rgba(10,18,28,.7);
+  border:1px solid rgba(124,197,255,.45);
+  backdrop-filter: blur(6px);
+  display:grid; place-items:center;
+  box-shadow: 0 0 0 6px rgba(124,197,255,.12);
+}
+.playbtn:after{
+  content:"";
+  width:0; height:0;
+  border-left:18px solid var(--brand);
+  border-top:11px solid transparent;
+  border-bottom:11px solid transparent;
+  margin-left:3px;
+  filter: drop-shadow(0 0 10px rgba(89,206,143,.8));
+}
+
+.meta{ padding:10px 12px 14px; display:flex; flex-direction:column; gap:6px; }
+.meta .title{ font-size:13px; font-weight:700; color:var(--text); }
+.meta .sub{ color:var(--muted); font-size:12px; }
+
+.loadmore{ display:flex; justify-content:center; margin:18px 0 6px; }
+
+/* Modal */
+.modal{ position:fixed; inset:0; display:none; place-items:center; background:rgba(6,10,16,.75); backdrop-filter: blur(3px); padding:18px; z-index:50; }
+.modal.open{ display:grid; }
+.player{
+  width:min(100%, 1100px); aspect-ratio:16/9;
+  background:#000; border-radius:16px; overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow: var(--shadow);
+}
+.close{
+  position:absolute; top:18px; right:18px;
+  background:var(--chip);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px; padding:8px 10px;
+  cursor:pointer;
+}

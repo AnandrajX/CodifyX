@@ -1,4 +1,4 @@
-const apiKey = 'AIzaSyBS1MZYT8a0DUaEpKj6bQOIQkJB7pStRfU';
+const apiKey = 'AIzaSyBtycHui_nw7bVGezHLrLl3eViC4c2ILUc';
 const maxResults = 12;
 
 // ✅ Only Channel IDs now — no names or icons

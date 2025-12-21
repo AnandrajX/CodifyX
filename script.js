@@ -17,7 +17,7 @@ const PLAYLISTS = [
   ['PLP9IO4UYNF0WWmZpE3W33vVPRl2GvjEqz','JS W3S'],
   ['PLGjplNEQ1it_oTvuLRNqXfz_v_0pq6unW','JS AP'],
   ['PLkDaE6sCZn6FNC6YRfRQc_FbeQrF8BwGI','ML Andrew Ng'],
-  ['PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ','C++ APNI KAKSHA']
+  ['PLf0LpPWikpPf3XbvH3iSKq91vYvRfURir','C Data Flair']
 ];
 
 let nextPageToken = '';

@@ -17,7 +17,7 @@ const PLAYLISTS = [
   ['PLP9IO4UYNF0WWmZpE3W33vVPRl2GvjEqz','JS W3S'],
   ['PLGjplNEQ1it_oTvuLRNqXfz_v_0pq6unW','JS AP'],
   ['PLkDaE6sCZn6FNC6YRfRQc_FbeQrF8BwGI','ML Andrew Ng'],
-  ['PLf0LpPWikpPf3XbvH3iSKq91vYvRfURir','C Data Flair']
+  ['PLhQjrBD2T380hlTqAU8HfvVepCcjCqTg6','CS50 2026']
 ];
 
 let nextPageToken = '';

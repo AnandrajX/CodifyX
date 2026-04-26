@@ -1,43 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CodifyX</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Brand Header -->
+
+  <!-- HEADER -->
   <header class="brand-header">
     <span class="logo" title="CodifyX">
       <span class="badge"><span class="tri"></span></span>
-      <span class="title">CodifyX<span style="opacity:.6">.io</span></span>
+      <span class="title">CodifyX<span class="tld">.io</span></span>
     </span>
+    <div class="header-right">
+      <div class="search-wrap">
+        <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search videos, channels..." autocomplete="off" aria-label="Search videos" />
+        <button class="search-clear" id="searchClear" aria-label="Clear search" hidden>✕</button>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle dark / light mode" aria-label="Toggle theme">
+        <span id="themeIcon">☀️</span>
+      </button>
+    </div>
   </header>
 
-  <!-- Controls -->
-  <section class="controls" id="channelButtons"></section>
-  <section class="strip" id="playlistButtons"></section>
-
-  <!-- Grid -->
-  <main class="grid" id="videosContainer" aria-live="polite" aria-busy="false"></main>
-
-  <!-- Load More -->
-  <div class="loadmore">
-    <button class="btn" id="loadMoreBtn" onclick="loadMore()">Load more</button>
-  </div>
-
-  <!-- Modal -->
-  <section class="modal" id="playerModal" role="dialog" aria-modal="true" aria-label="Video player">
-    <button class="close btn" onclick="closeModal()">✕ Close</button>
-    <div class="player">
-      <iframe id="playerFrame" width="100%" height="100%" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen></iframe>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Level up your <span class="hero-accent">coding skills</span></h1>
+      <p>Curated tutorials from the best programming educators — organized, searchable, always growing.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-num" id="statChannels">4</span><span class="hstat-label">Channels</span></div>
+      <div class="hstat"><span class="hstat-num">8</span><span class="hstat-label">Playlists</span></div>
+      <div class="hstat"><span class="hstat-num">∞</span><span class="hstat-label">Videos</span></div>
     </div>
   </section>
+
+  <!-- CONTROLS -->
+  <section class="controls-wrap">
+    <div class="controls-label">Channels</div>
+    <section class="controls" id="channelButtons" role="group" aria-label="Channel filters"></section>
+  </section>
+  <section class="controls-wrap strip-wrap">
+    <div class="controls-label">Playlists</div>
+    <section class="strip" id="playlistButtons" role="group" aria-label="Playlist filters"></section>
+  </section>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar" id="toolbar">
+    <div class="toolbar-left">
+      <span class="result-count" id="resultCount"></span>
+    </div>
+    <div class="toolbar-right">
+      <div class="sort-group">
+        <button class="sort-btn active" data-sort="date">Latest</button>
+        <button class="sort-btn" data-sort="title">A–Z</button>
+      </div>
+      <div class="view-group">
+        <button class="view-btn active" id="gridViewBtn" title="Grid view">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><rect x="0" y="0" width="6" height="6" rx="1"/><rect x="10" y="0" width="6" height="6" rx="1"/><rect x="0" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
+        </button>
+        <button class="view-btn" id="listViewBtn" title="List view">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><rect x="0" y="1" width="16" height="3" rx="1"/><rect x="0" y="7" width="16" height="3" rx="1"/><rect x="0" y="13" width="16" height="3" rx="1"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState" hidden>
+    <div class="empty-icon">📭</div>
+    <p>No videos found for "<span id="emptyQuery"></span>"</p>
+    <button class="btn" onclick="clearSearch()">Clear search</button>
+  </div>
+
+  <!-- GRID -->
+  <main class="grid" id="videosContainer" aria-live="polite" aria-busy="false"></main>
+
+  <!-- LOAD MORE -->
+  <div class="loadmore">
+    <button class="btn load-btn" id="loadMoreBtn" onclick="loadMore()">
+      <span class="load-btn-text">Load more</span>
+    </button>
+  </div>
+
+  <!-- MODAL -->
+  <section class="modal" id="playerModal" role="dialog" aria-modal="true" aria-label="Video player">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <span class="modal-title" id="modalTitle">Now Playing</span>
+        <button class="close btn" onclick="closeModal()" aria-label="Close player">✕ Close</button>
+      </div>
+      <div class="player">
+        <iframe id="playerFrame" width="100%" height="100%" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCROLL TOP -->
+  <button class="scroll-top" id="scrollTop" aria-label="Back to top">↑</button>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo footer-logo">
+          <span class="badge"><span class="tri"></span></span>
+          <span class="title">CodifyX<span class="tld">.io</span></span>
+        </span>
+        <p class="footer-tagline">Your go-to hub for programming tutorials, curated from the best educators on the internet.</p>
+        <div class="socials">
+          <a class="soc-btn" href="https://github.com" target="_blank" rel="noopener" title="GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"/></svg>
+          </a>
+          <a class="soc-btn" href="https://twitter.com" target="_blank" rel="noopener" title="Twitter / X">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a class="soc-btn" href="https://youtube.com" target="_blank" rel="noopener" title="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a class="soc-btn" href="https://discord.com" target="_blank" rel="noopener" title="Discord">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 00-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 00-5.487 0 12.36 12.36 0 00-.617-1.23A.077.077 0 008.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 00-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 00.031.055 20.03 20.03 0 005.993 2.98.078.078 0 00.084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 01-1.872-.878.075.075 0 01-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 01.078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 01.079.009c.12.098.245.195.372.288a.075.075 0 01-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 00-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 00.084.028 19.963 19.963 0 006.002-2.981.076.076 0 00.032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 00-.031-.028z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links-grid">
+        <div class="footer-col">
+          <h4 class="footer-col-title">Explore</h4>
+          <ul>
+            <li><a href="#">All Channels</a></li>
+            <li><a href="#">All Playlists</a></li>
+            <li><a href="#">Trending</a></li>
+            <li><a href="#">New Uploads</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Topics</h4>
+          <ul>
+            <li><a href="#">C Programming</a></li>
+            <li><a href="#">Web Dev</a></li>
+            <li><a href="#">Machine Learning</a></li>
+            <li><a href="#">CS50</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">About</h4>
+          <ul>
+            <li><a href="#">About CodifyX</a></li>
+            <li><a href="#">Submit a Channel</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 CodifyX.io — Built for developers, by developers.</p>
+      <p>Made with ♥ &amp; lots of ☕</p>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
